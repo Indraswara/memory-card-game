@@ -4,6 +4,19 @@ document.addEventListener('DOMContentLoaded', function () {
     let lockBoard = false;
     let firstCard, secondCard;
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Shuffle the NodeList of cards
+    const shuffledCards = shuffle(Array.from(cards));
+    shuffledCards.forEach(card => document.querySelector('.memory-game').appendChild(card));
+
+    
     function flipCard() {
         if (lockBoard) return; 
         if (this === firstCard) return; 
