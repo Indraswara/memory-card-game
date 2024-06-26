@@ -1,8 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
     const cards = document.querySelectorAll('.memory-card');
+    const timerDisplay = document.getElementById('timer');
     let hasFlippedCard = false;
     let lockBoard = false;
     let firstCard, secondCard;
+    let startTime;
+    let timer;
+    let matchesFound = 0;
+    let totalFlips = 0;
 
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -12,25 +17,44 @@ document.addEventListener('DOMContentLoaded', function () {
         return array;
     }
 
-    // Shuffle the NodeList of cards
     const shuffledCards = shuffle(Array.from(cards));
     shuffledCards.forEach(card => document.querySelector('.memory-game').appendChild(card));
 
-    
+    function startTimer() {
+        startTime = new Date();
+        timer = setInterval(() => {
+            const elapsedTime = Math.floor((new Date() - startTime) / 1000);
+            timerDisplay.textContent = `Time: ${elapsedTime}s`;
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timer);
+    }
+
     function flipCard() {
         if (lockBoard) return; 
         if (this === firstCard) return; 
 
         this.classList.add('flip');
+        totalFlips++;
 
         if (!hasFlippedCard) {
             hasFlippedCard = true;
             firstCard = this;
+
+            if (matchesFound === 0 && totalFlips === 1) {
+                startTimer();  
+            }
         } else {
             hasFlippedCard = false;
             secondCard = this;
 
             checkForMatch();
+        }
+
+        if (totalFlips === cards.length) {
+            stopTimer();  
         }
     }
 
@@ -39,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isMatch) {
             disableCards();
+            matchesFound += 1;
         } else {
             lockBoard = true; 
             setTimeout(() => {
