@@ -6,5 +6,37 @@
 
 body {
     height: 100vh; 
-    background-color: #282be9;
+    display: flex; 
+    background-color: #9d9ee2;
+}
+
+.memory-game{
+    width: 640px; 
+    height: 640px;
+    display: flex;
+    margin: auto;
+    flex-wrap: wrap;
+}
+
+.memory-card {
+    width: calc(25% - 10px);
+    height: calc(33.333% - 10px);
+    margin: 5px;
+    position: relative;
+    transform: scale(1);
+}
+
+.memory-card:active{
+    transform: scale(.97);
+    transition: transform .2s;
+}
+
+
+.front-face, .back-face{
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    position: absolute;
+    border-radius: 5px;
+    background-color: rgb(103, 108, 240);
 }
